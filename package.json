@@ -4,7 +4,7 @@
   "description": "A minimal testing server with eJS and ESI support",
   "main": "index.js",
   "scripts": {
-
+    "test": "echo \"TODO\""
   },
   "bin": {
     "fixtureserver": "bin/fixtureserver.js"
@@ -29,12 +29,13 @@
   "homepage": "https://github.com/ryx/fixtureserver#readme",
   "dependencies": {
     "ejs": "^2.6.1",
-    "nodesi": "^1.8.0"
+    "hapi": "^17.6.0",
+    "nodesi": "^1.8.0",
+    "yargs": "^12.0.2"
   },
   "devDependencies": {
     "eslint": "^5.6.1",
     "eslint-config-airbnb-base": "^13.1.0",
-    "eslint-plugin-import": "^2.14.0",
-    "hapi": "^17.6.0"
+    "eslint-plugin-import": "^2.14.0"
   }
 }

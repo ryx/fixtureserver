@@ -14,19 +14,11 @@ const fs = require('fs');
 const path = require('path');
 const ejs = require('ejs');
 
-// server config
-const serverDocroot = process.env.DOCROOT || path.join(__dirname, '/docroot');
-const serverHost = process.env.HOST || 'localhost';
-const serverPort = process.env.PORT || 8000;
+// docroot
+let serverDocroot = path.join(__dirname, '/docroot');
 
 // create ESI processor instance
 const esi = new ESI();
-
-// Create a server with a host and port
-const server = Hapi.server({
-  host: serverHost,
-  port: serverPort,
-});
 
 /**
  * Converts a given path- or filename to a path relative to the server docroot
@@ -144,43 +136,55 @@ async function renderFile(fileName) {
   return html;
 }
 
-// Add the route
-server.route({
-  method: 'GET',
-  path: '/{filename*}',
-  async handler(request, h) {
-    try {
-      let html = '';
-      const targetFile = path.join(serverDocroot, request.params.filename);
-      console.log(`Requested: ${targetFile}`);
-
-      // check existence
-      const stats = fs.statSync(targetFile);
-      if (!stats) {
-        h.status = 404;
-        return h.response('server-esi: file not found');
-      }
-
-      // render contents
-      if (stats.isDirectory()) {
-        html = await renderPath(request.params.filename);
-      } else {
-        html = await renderFile(targetFile);
-      }
-
-      // return result
-      h.status = 200;
-      return h.response(html);
-    } catch (e) {
-      // bulk handle all errors
-      h.status = 500;
-      return h.response(e.message);
-    }
-  },
-});
-
 // Start the server
-async function start() {
+async function start(options) {
+  // Create a server with a host and port
+  const server = Hapi.server({
+    host: options.host || 'localhost',
+    port: options.port || 8000,
+  });
+
+  // override docroot if set
+  if (options.docroot) {
+    serverDocroot = options.docroot;
+  }
+
+  // add routes
+  server.route({
+    method: 'GET',
+    path: '/{filename*}',
+    async handler(request, h) {
+      try {
+        let html = '';
+        const targetFile = path.join(serverDocroot, request.params.filename);
+        console.log(`Requested: ${targetFile}`);
+
+        // check existence
+        const stats = fs.statSync(targetFile);
+        if (!stats) {
+          h.status = 404;
+          return h.response('server-esi: file not found');
+        }
+
+        // render contents
+        if (stats.isDirectory()) {
+          html = await renderPath(request.params.filename);
+        } else {
+          html = await renderFile(targetFile);
+        }
+
+        // return result
+        h.status = 200;
+        return h.response(html);
+      } catch (e) {
+        // bulk handle all errors
+        h.status = 500;
+        return h.response(e.message);
+      }
+    },
+  });
+
+  // launch server
   try {
     await server.start();
   } catch (err) {
