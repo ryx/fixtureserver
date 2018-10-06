@@ -1,0 +1,40 @@
+{
+  "name": "fixtureserver",
+  "version": "0.0.1",
+  "description": "A minimal testing server with eJS and ESI support",
+  "main": "index.js",
+  "scripts": {
+
+  },
+  "bin": {
+    "fixtureserver": "bin/fixtureserver.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+ssh://git@github.com/ryx/fixtureserver.git"
+  },
+  "keywords": [
+    "fixture",
+    "ejs",
+    "testing",
+    "esi",
+    "ssi",
+    "include"
+  ],
+  "author": "Rico Pfaus",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/ryx/fixtureserver/issues"
+  },
+  "homepage": "https://github.com/ryx/fixtureserver#readme",
+  "dependencies": {
+    "ejs": "^2.6.1",
+    "nodesi": "^1.8.0"
+  },
+  "devDependencies": {
+    "eslint": "^5.6.1",
+    "eslint-config-airbnb-base": "^13.1.0",
+    "eslint-plugin-import": "^2.14.0",
+    "hapi": "^17.6.0"
+  }
+}
