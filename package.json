@@ -1,6 +1,6 @@
 {
   "name": "fixtureserver",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "description": "A minimal testing server with eJS and ESI support",
   "main": "index.js",
   "scripts": {
